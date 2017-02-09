@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "337905184893",
+    "firebase_url": "https://gestionjuveniles.firebaseio.com",
+    "project_id": "gestionjuveniles",
+    "storage_bucket": "gestionjuveniles.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337905184893:android:47bcf43ea7ad0c05",
+        "android_client_info": {
+          "package_name": "com.gestionjuveniles.appmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337905184893-0gpetco1o5b61i0ih1hsdvq9qs305dhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBztIKHr06-3r5-IPc4TwMYiNLsZJvxTUQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
