@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import gestion_juveniles.com.gestionjuveniles_mobile.R;
-
 public class Menu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Button PPafavor;

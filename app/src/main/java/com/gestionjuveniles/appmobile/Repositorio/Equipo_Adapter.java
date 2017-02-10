@@ -11,7 +11,6 @@ import com.gestionjuveniles.appmobile.Modelo.Posicion_Jugador;
 
 import java.util.List;
 
-import gestion_juveniles.com.gestionjuveniles_mobile.R;
 
 
 /**

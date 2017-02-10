@@ -1,4 +1,4 @@
-package com.gestionjuveniles.appmobile;
+package gestion_juveniles.com.gestionjuveniles_mobile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,12 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.gestionjuveniles.appmobile.Modelo.Profesor;
-
 import java.util.List;
 
-import gestion_juveniles.com.gestionjuveniles_mobile.R;
-
+import gestion_juveniles.com.gestionjuveniles_mobile.Modelo.Profesor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(MainActivity.this, gestion_juveniles.com.gestionjuveniles_mobile.Menu.class);
+                Intent i = new Intent(MainActivity.this, Menu.class);
 
                 startActivity(i);
             }
