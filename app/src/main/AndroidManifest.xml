@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="gestion_juveniles.com.gestionjuveniles_mobile" >
+    package="com.gestionjuveniles.appmobile" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -22,9 +22,10 @@
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".fecha_actual"
+            android:name=".Fecha_Actual"
             android:label="@string/title_activity_fecha_actual"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>

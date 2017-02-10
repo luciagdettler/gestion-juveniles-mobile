@@ -1,4 +1,4 @@
-package gestion_juveniles.com.gestionjuveniles_mobile;
+package com.gestionjuveniles.appmobile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.gestionjuveniles.appmobile.Modelo.Profesor;
+
 import java.util.List;
 
-import gestion_juveniles.com.gestionjuveniles_mobile.Modelo.Profesor;
+
 
 public class MainActivity extends AppCompatActivity {
 
