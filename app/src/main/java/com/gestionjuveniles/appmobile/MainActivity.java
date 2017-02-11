@@ -11,7 +11,6 @@ import com.gestionjuveniles.appmobile.Modelo.Profesor;
 
 import java.util.List;
 
-import gestion_juveniles.com.gestionjuveniles_mobile.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(MainActivity.this, gestion_juveniles.com.gestionjuveniles_mobile.Menu.class);
+                Intent i = new Intent(MainActivity.this, Menu.class);
 
                 startActivity(i);
             }

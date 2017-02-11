@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.gestionjuveniles.appmobile.Modelo.Posicion_Jugador;
+import com.gestionjuveniles.appmobile.R;
 
 import java.util.List;
 
-import gestion_juveniles.com.gestionjuveniles_mobile.R;
 
 
 /**
