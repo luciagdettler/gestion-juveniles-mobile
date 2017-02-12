@@ -1,14 +1,14 @@
-package com.gestionjuveniles.appmobile.Modelo;
+package com.gestionjuveniles.appmobile.domain;
 
 import java.io.Serializable;
 
 /**
  * Created by Usuario on 6/2/2017.
  */
-public class Posicion implements Serializable{
+public class Position implements Serializable{
 
     private String cod;
-    public Posicion(String s){
+    public Position(String s){
         this.cod = s;
     }
 

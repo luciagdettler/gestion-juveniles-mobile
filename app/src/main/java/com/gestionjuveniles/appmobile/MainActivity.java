@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.gestionjuveniles.appmobile.Modelo.Profesor;
+import com.gestionjuveniles.appmobile.domain.User;
 
 import java.util.List;
 
@@ -29,9 +29,7 @@ public class MainActivity extends AppCompatActivity {
         String email = user.getText().toString();
         String contraseña = pass.getText().toString();
 
-        //Profesor prof = buscarProfesor(email,contraseña,listaProfesores);
-
-
+        //User prof = buscarProfesor(email,contraseña,listaProfesores);
 
         iniciarSesion = (Button) findViewById(R.id.ingresar);
         iniciarSesion.setOnClickListener( new View.OnClickListener() {
@@ -46,17 +44,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public Profesor buscarProfesor(String email, String contraseña, List<Profesor> profes){
-        Profesor profesor = new Profesor();
-        profesor=null;
-        for (Profesor p : profes){
+    public User buscarProfesor(String email, String contraseña, List<User> profes){
+        User user = new User();
+        user =null;
+        for (User p : profes){
             if(email.equals(p.getEmail())){
                 if(contraseña.equals(p.getPass())){
-                    profesor = p;
+                    user = p;
                 }
             }
         }
-        return profesor;
+        return user;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.gestionjuveniles.appmobile.Modelo;
+package com.gestionjuveniles.appmobile.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,24 +6,24 @@ import java.util.List;
 /**
  * Created by Usuario on 7/2/2017.
  */
-public class Profesor {
+public class User {
 
     private Integer id;
     private String nombre;
     private String email;
-    private List<Equipo> equipo;
+    private List<Team> team;
     private String pass;
 
-    public Profesor(){
-
+    public User(){
+        this.team = new ArrayList<Team>();
     }
 
-    public Profesor(String email, String pass){
+    public User(String email, String pass){
 
         this.email = email;
         this.pass = pass;
 
-       this.equipo = new ArrayList<Equipo>();
+       this.team = new ArrayList<Team>();
 
     }
 
@@ -62,12 +62,12 @@ public class Profesor {
         this.pass = pass;
     }
 
-    public List<Equipo> getEquipo() {
-        return equipo;
+    public List<Team> getTeam() {
+        return team;
     }
 
-    public void setEquipo(List<Equipo> equipo) {
-        this.equipo = equipo;
+    public void setTeam(List<Team> team) {
+        this.team = team;
     }
 
 }

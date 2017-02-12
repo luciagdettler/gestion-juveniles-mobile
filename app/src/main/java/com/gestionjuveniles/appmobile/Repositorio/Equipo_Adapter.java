@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.gestionjuveniles.appmobile.Modelo.Posicion_Jugador;
+import com.gestionjuveniles.appmobile.domain.PlayerPosition;
 import com.gestionjuveniles.appmobile.R;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * Created by Usuario on 7/2/2017.
  */
-public class Equipo_Adapter  extends ArrayAdapter<Posicion_Jugador> {
+public class Equipo_Adapter  extends ArrayAdapter<PlayerPosition> {
     private LayoutInflater inflater;
     private Context contexto;
 
-    public Equipo_Adapter(Context contexto, List<Posicion_Jugador> items) {
+    public Equipo_Adapter(Context contexto, List<PlayerPosition> items) {
         super(contexto, R.layout.fila,items);
         inflater = LayoutInflater.from(contexto);
     }
@@ -31,11 +31,11 @@ public class Equipo_Adapter  extends ArrayAdapter<Posicion_Jugador> {
         View row = convertView;
         if (row == null) row = inflater.inflate(R.layout.fila, parent, false);
         TextView txtNum = (TextView) row.findViewById(R.id.num);
-        txtNum.setText(this.getItem(position).getPos().toString()+" - ");
-        TextView txtNombre = (TextView) row.findViewById(R.id.nombre);
-     //  txtNombre.setText(this.getItem(position).getJug().getNombre());
-        TextView txtPosicion = (TextView) row.findViewById(R.id.pos);
-       txtPosicion.setText(" - " + this.getItem(position).getPosicion().getCod());
+        txtNum.setText(this.getItem(position).getNumber().toString()+" - ");
+        TextView txtNombre = (TextView) row.findViewById(R.id.name);
+     //  txtNombre.setText(this.getItem(position).getJug().getName());
+        TextView txtPosicion = (TextView) row.findViewById(R.id.number);
+       txtPosicion.setText(" - " + this.getItem(position).getPosition());
         return row;
     }
 }

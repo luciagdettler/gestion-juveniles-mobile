@@ -11,9 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.gestionjuveniles.appmobile.Modelo.Posicion_Jugador;
-import com.gestionjuveniles.appmobile.Modelo.Profesor;
+import com.gestionjuveniles.appmobile.domain.Team;
+import com.gestionjuveniles.appmobile.domain.User;
 import com.gestionjuveniles.appmobile.Repositorio.Equipo_Adapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +29,7 @@ public class Fecha_Actual extends AppCompatActivity {
 
     private ListView listaJugadores;
     private Equipo_Adapter adapter;
-    private Profesor prof;
+    private User prof;
     String[] nombres = {
             "Alexander Pierrot",
             "Carlos Lopez",
@@ -37,6 +42,8 @@ public class Fecha_Actual extends AppCompatActivity {
             "Linda Murillo",
             "Lizeth Astrada"
     };
+    private Team team;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +69,27 @@ public class Fecha_Actual extends AppCompatActivity {
 
         }else {
             //momentaneo hasta hacer lo del login
-            List<Posicion_Jugador> formacion= new ArrayList<Posicion_Jugador>();
-            prof=new Profesor(null, null);
+            /*
+                Acá busca el team (equipo). El atributo formation (List<Player_Position>)
+                del team se debe usar para cargar la lista de formación previa.
+             */
+            DatabaseReference firebaseReference = database.getReference("users").child("0").child("team").child("0");
+            firebaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    team = dataSnapshot.getValue(Team.class);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError firebaseError) {
+                    //NADA
+                }
+            });
+
+            /* Y acá finaliza lo de Firebase */
         }
-        adapter = new Equipo_Adapter(Fecha_Actual.this,prof.getEquipo().get(0).getEquipo());
+        //adapter = new Equipo_Adapter(Fecha_Actual.this,prof.getTeam().get(0).getTeam());
         listaJugadores.setAdapter(adapter);
 
 
