@@ -8,12 +8,16 @@ import java.io.Serializable;
 public class Player implements Serializable {
     private Integer id;
     private String name;
+    private String position;
 
     public Player(){}
 
-    public Player(Integer id, String name){
+
+
+    public Player(Integer id, String name, String pos){
         this.id = id;
         this.name = name;
+        this.position=pos;
 
     }
 
@@ -32,5 +36,13 @@ public class Player implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    public String getPos() {
+        return position;
+    }
+
+    public void setPos(String pos) {
+        this.position = pos;
+    }
+
 
 }

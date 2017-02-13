@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Team implements Serializable {
 
     private Integer id;
-    private List<PlayerPosition> playerPosition;
+    private List<PlayerPosition> formation;
     private List<Player> players;
 
     public Team(){
@@ -27,11 +27,11 @@ public class Team implements Serializable {
     }
 
     public List<PlayerPosition> getPlayerPosition() {
-        return playerPosition;
+        return formation;
     }
 
     public void setPlayerPosition(List<PlayerPosition> playerPosition) {
-        this.playerPosition = playerPosition;
+        this.formation = playerPosition;
     }
 
     public List<Player> getPlayers() {
@@ -40,5 +40,45 @@ public class Team implements Serializable {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public List<Player> getArq(){
+        List<Player> arq = new ArrayList<Player>();
+
+        for(Player p: players){
+            if(p.getPos().equals("ARQ") )
+                arq.add(p);
+        }
+        return arq;
+    }
+
+    public List<Player> getDef(){
+        List<Player> def = new ArrayList<Player>();
+
+        for(Player p: players){
+            if(p.getPos().equals("DEF") )
+                def.add(p);
+        }
+        return def;
+    }
+
+    public List<Player> getMed(){
+        List<Player> med = new ArrayList<Player>();
+
+        for(Player p: players){
+            if(p.getPos().equals("MED") )
+                med.add(p);
+        }
+        return med;
+    }
+
+    public List<Player> getDel(){
+        List<Player> del = new ArrayList<Player>();
+
+        for(Player p: players){
+            if(p.getPos().equals("DEL") )
+                del.add(p);
+        }
+        return del;
     }
 }

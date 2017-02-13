@@ -11,9 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.gestionjuveniles.appmobile.Repositorio.Equipo_Adapter;
+import com.gestionjuveniles.appmobile.domain.Player;
+import com.gestionjuveniles.appmobile.domain.PlayerPosition;
 import com.gestionjuveniles.appmobile.domain.Team;
 import com.gestionjuveniles.appmobile.domain.User;
-import com.gestionjuveniles.appmobile.Repositorio.Equipo_Adapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,25 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class Fecha_Actual extends AppCompatActivity {
 
     private ListView listaJugadores;
     private Equipo_Adapter adapter;
     private User prof;
-    String[] nombres = {
-            "Alexander Pierrot",
-            "Carlos Lopez",
-            "Sara Bonz",
-            "Liliana Clarence",
-            "Benito Peralta",
-            "Juan Jaramillo",
-            "Christian Steps",
-            "Alexa Giraldo",
-            "Linda Murillo",
-            "Lizeth Astrada"
-    };
     private Team team;
+   private List<PlayerPosition> formacion;
+    private PlayerPosition player;
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
@@ -52,45 +44,47 @@ public class Fecha_Actual extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        prof = new User();
+        team = new Team();
 
         listaJugadores= (ListView) findViewById(R.id.listaJugadores);
+        DatabaseReference firebaseReference = database.getReference("users").child("0").child("teams").child("0");
+        firebaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                team = dataSnapshot.getValue(Team.class);
+
+                Log.d("fechaActual", "equipo  "+team.getId() +"   " + team.getPlayers().get(2).getName());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                //NADA
+            }
+        });
 
 }
 
     @Override
     protected void onStart() {
         super.onStart();
-       // boolean cargado = equipocargado();
+        //boolean cargado = equipocargado();
         boolean cargado = false;
         if(cargado){
 
 
-
+       List formacion = team.getPlayerPosition();
 
         }else {
-            //momentaneo hasta hacer lo del login
-            /*
-                Acá busca el team (equipo). El atributo formation (List<Player_Position>)
-                del team se debe usar para cargar la lista de formación previa.
-             */
-            DatabaseReference firebaseReference = database.getReference("users").child("0").child("team").child("0");
-            firebaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    team = dataSnapshot.getValue(Team.class);
-                }
+             formacion= new ArrayList<PlayerPosition>();
+            formacion = team.getPlayerPosition();
 
-                @Override
-                public void onCancelled(DatabaseError firebaseError) {
-                    //NADA
-                }
-            });
-
-            /* Y acá finaliza lo de Firebase */
         }
-        //adapter = new Equipo_Adapter(Fecha_Actual.this,prof.getTeam().get(0).getTeam());
-        listaJugadores.setAdapter(adapter);
+       adapter = new Equipo_Adapter(Fecha_Actual.this,formacion);
+       listaJugadores.setAdapter(adapter);
 
 
 
@@ -99,18 +93,29 @@ public class Fecha_Actual extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            ArrayAdapter<String> mLeadsAdapter = new ArrayAdapter<String>(
+            ArrayAdapter<Player> arqAdapter = new ArrayAdapter<Player>(
                     Fecha_Actual.this,
                     android.R.layout.simple_list_item_single_choice,
-                    nombres);
-
+                    team.getArq());
+            ArrayAdapter<Player> delAdapter = new ArrayAdapter<Player>(
+                    Fecha_Actual.this,
+                    android.R.layout.simple_list_item_single_choice,
+                    team.getDel());
+            ArrayAdapter<Player> medAdapter = new ArrayAdapter<Player>(
+                    Fecha_Actual.this,
+                    android.R.layout.simple_list_item_single_choice,
+                    team.getMed());
+            ArrayAdapter<Player> defAdapter = new ArrayAdapter<Player>(
+                    Fecha_Actual.this,
+                    android.R.layout.simple_list_item_single_choice,
+                    team.getDef());
 
             switch(position){
                 case 0:
                     Log.d("Arquero","Se selecciono el arquero");
                     AlertDialog.Builder builderArq = new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Arqueros:")
-                            .setSingleChoiceItems(mLeadsAdapter,0, new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(arqAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
@@ -136,7 +141,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     Log.d("Defensor","Se selecciono el defensor");
                     AlertDialog.Builder builderDef = new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Defensores:")
-                            .setSingleChoiceItems(mLeadsAdapter,0, new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
@@ -161,7 +166,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     Log.d("Mediocampista","Se selecciono el mediocampista");
                     AlertDialog.Builder builderMed = new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Mediocampistas;")
-                            .setSingleChoiceItems(mLeadsAdapter,0, new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
@@ -186,7 +191,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     Log.d("Delantero","Se selecciono el delanter");
                     AlertDialog.Builder builderDel = new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Delanteros:")
-                            .setSingleChoiceItems(mLeadsAdapter,0, new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }

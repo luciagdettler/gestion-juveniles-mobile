@@ -7,12 +7,11 @@ import java.io.Serializable;
  */
 public class PlayerPosition implements Serializable{
     private Integer number;
-    private Player jug;
+  //  private Player jug;
     private String position;
     private Integer playerId;
 
     public PlayerPosition(){
-
     }
 
     public PlayerPosition(Integer number) {
@@ -20,13 +19,9 @@ public class PlayerPosition implements Serializable{
     }
 
 
-    public Player getJug() {
-        return jug;
-    }
+   // public Player getJug() { return jug;  }
 
-    public void setJug(Player jug) {
-        this.jug = jug;
-    }
+    //public void setJug(Player jug) {     this.jug = jug;   }
 
     public Integer getNumber() {
         return number;

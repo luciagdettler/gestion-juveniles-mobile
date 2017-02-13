@@ -9,21 +9,21 @@ import java.util.List;
 public class User {
 
     private Integer id;
-    private String nombre;
+    private String name;
     private String email;
-    private List<Team> team;
-    private String pass;
+    private List<Team> teams;
+    private String password;
 
     public User(){
-        this.team = new ArrayList<Team>();
+        this.teams = new ArrayList<Team>();
     }
 
     public User(String email, String pass){
 
         this.email = email;
-        this.pass = pass;
+        this.password = pass;
 
-       this.team = new ArrayList<Team>();
+       this.teams = new ArrayList<Team>();
 
     }
 
@@ -35,12 +35,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String nombre) {
+        this.name = nombre;
     }
 
     public String getEmail() {
@@ -54,20 +54,20 @@ public class User {
 
 
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String pass) {
+        this.password = pass;
     }
 
     public List<Team> getTeam() {
-        return team;
+        return teams;
     }
 
     public void setTeam(List<Team> team) {
-        this.team = team;
+        this.teams = team;
     }
 
 }

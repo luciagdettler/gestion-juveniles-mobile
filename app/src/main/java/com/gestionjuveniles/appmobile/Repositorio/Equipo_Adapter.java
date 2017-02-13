@@ -32,8 +32,8 @@ public class Equipo_Adapter  extends ArrayAdapter<PlayerPosition> {
         if (row == null) row = inflater.inflate(R.layout.fila, parent, false);
         TextView txtNum = (TextView) row.findViewById(R.id.num);
         txtNum.setText(this.getItem(position).getNumber().toString()+" - ");
-        TextView txtNombre = (TextView) row.findViewById(R.id.name);
-     //  txtNombre.setText(this.getItem(position).getJug().getName());
+       // TextView txtNombre = (TextView) row.findViewById(R.id.name);
+      // txtNombre.setText(this.getItem(position).getJug().getName());
         TextView txtPosicion = (TextView) row.findViewById(R.id.number);
        txtPosicion.setText(" - " + this.getItem(position).getPosition());
         return row;
