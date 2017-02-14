@@ -43,7 +43,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_centerHorizontal="true"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:visibility="invisible"
+        style="@android:style/Widget.ProgressBar.Small"
         />
 
 </RelativeLayout>

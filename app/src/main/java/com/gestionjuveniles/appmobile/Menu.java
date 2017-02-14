@@ -22,10 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Menu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private Button PPafavor;
-    private Button PPencontra;
+public class Menu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     private Button fecha_actual;
     public static User miusuariologeado;
    private ProgressBar progressBar;
@@ -74,15 +72,17 @@ public class Menu extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-               // AsinTaskEspera ejemploAsyncTask = new AsinTaskEspera();
-              //  ejemploAsyncTask.execute();
 
-                if(miusuariologeado==null) {
-                    Toast.makeText(Menu.this, "Espere, por favor", Toast.LENGTH_SHORT).show();return;
+               if(miusuariologeado==null) {
+                    AsinTaskEspera ejemploAsyncTask = new AsinTaskEspera();
+                    ejemploAsyncTask.execute();
+
                 }
-                Intent i = new Intent(Menu.this, Fecha_Actual.class);
+               else{
+                   Intent i = new Intent(Menu.this, Fecha_Actual.class);
+                   startActivity(i);
+               }
 
-                startActivity(i);
             }
         });
     }
@@ -151,6 +151,12 @@ public class Menu extends AppCompatActivity
                 Thread.sleep(1000);
             }catch (InterruptedException e){}
         }
+
+        @Override
+        public void onPreExecute(){
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        }
+
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
@@ -165,6 +171,10 @@ public class Menu extends AppCompatActivity
         protected void onPostExecute(Boolean resultado) {
             //super.onPostExecute(aVoid);
                 Toast.makeText(Menu.this, "Finalizo la carga", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            Intent i = new Intent(Menu.this, Fecha_Actual.class);
+
+            startActivity(i);
 
         }
 
