@@ -1,6 +1,7 @@
 package com.gestionjuveniles.appmobile;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,12 +12,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.gestionjuveniles.appmobile.domain.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Menu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Button PPafavor;
     private Button PPencontra;
     private Button fecha_actual;
+    public static User miusuariologeado;
+   private ProgressBar progressBar;
+
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +40,24 @@ public class Menu extends AppCompatActivity
         toolbar.setTitle("Fecha Actual");
         setSupportActionBar(toolbar);
 
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+
+        DatabaseReference firebaseReference = database.getReference("users").child("0");
+        firebaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                miusuariologeado = dataSnapshot.getValue(User.class);
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                //NADA
+            }
+        });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -40,6 +73,13 @@ public class Menu extends AppCompatActivity
         fecha_actual.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+               // AsinTaskEspera ejemploAsyncTask = new AsinTaskEspera();
+              //  ejemploAsyncTask.execute();
+
+                if(miusuariologeado==null) {
+                    Toast.makeText(Menu.this, "Espere, por favor", Toast.LENGTH_SHORT).show();return;
+                }
                 Intent i = new Intent(Menu.this, Fecha_Actual.class);
 
                 startActivity(i);
@@ -89,4 +129,47 @@ public class Menu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public class AsinTaskEspera extends AsyncTask<Void,Integer,Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            while(miusuariologeado==null){
+               int i=1;
+                UnSegundo();
+                publishProgress(i*10);
+                if(isCancelled()){
+                    break;
+                }
+                i++;
+            }
+            return true;
+
+        }
+        private void UnSegundo(){
+            try{
+                Thread.sleep(1000);
+            }catch (InterruptedException e){}
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+            progressBar.setProgress(values[0].intValue());
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(Boolean resultado) {
+            //super.onPostExecute(aVoid);
+                Toast.makeText(Menu.this, "Finalizo la carga", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
+}
+
 }

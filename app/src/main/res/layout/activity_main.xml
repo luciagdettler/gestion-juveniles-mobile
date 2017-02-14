@@ -32,11 +32,12 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/user"
         android:layout_alignBottom="@+id/tv2"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:text="lucia@gmail.com" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +56,8 @@
         android:ems="10"
         android:id="@+id/pass"
         android:layout_alignBottom="@+id/tv3"
-        android:layout_alignEnd="@+id/user" />
+        android:layout_alignEnd="@+id/user"
+        android:text="dettler" />
 
     <Button
         android:layout_width="wrap_content"

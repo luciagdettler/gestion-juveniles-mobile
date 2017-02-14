@@ -14,9 +14,9 @@ public class Team implements Serializable {
     private List<Player> players;
 
     public Team(){
-        setPlayerPosition(new ArrayList<PlayerPosition>());
-        setPlayers(new ArrayList<Player>());
+
     }
+
 
     public Integer getId() {
         return id;
@@ -26,13 +26,14 @@ public class Team implements Serializable {
         this.id = id;
     }
 
-    public List<PlayerPosition> getPlayerPosition() {
+    public List<PlayerPosition> getFormation() {
         return formation;
     }
 
-    public void setPlayerPosition(List<PlayerPosition> playerPosition) {
+    public void setFormation(List<PlayerPosition> playerPosition) {
         this.formation = playerPosition;
     }
+
 
     public List<Player> getPlayers() {
         return players;
@@ -46,7 +47,7 @@ public class Team implements Serializable {
         List<Player> arq = new ArrayList<Player>();
 
         for(Player p: players){
-            if(p.getPos().equals("ARQ") )
+            if(p.getPosition().equals("ARQ") )
                 arq.add(p);
         }
         return arq;
@@ -56,7 +57,7 @@ public class Team implements Serializable {
         List<Player> def = new ArrayList<Player>();
 
         for(Player p: players){
-            if(p.getPos().equals("DEF") )
+            if(p.getPosition().equals("DEF") )
                 def.add(p);
         }
         return def;
@@ -66,7 +67,7 @@ public class Team implements Serializable {
         List<Player> med = new ArrayList<Player>();
 
         for(Player p: players){
-            if(p.getPos().equals("MED") )
+            if(p.getPosition().equals("MED") )
                 med.add(p);
         }
         return med;
@@ -76,9 +77,35 @@ public class Team implements Serializable {
         List<Player> del = new ArrayList<Player>();
 
         for(Player p: players){
-            if(p.getPos().equals("DEL") )
+            if(p.getPosition().equals("DEL") )
                 del.add(p);
         }
         return del;
+    }
+
+    public List<PlayerPosition> setearPlayers (List<PlayerPosition> vacia){
+
+        for(PlayerPosition pp:formation){
+            if(pp.getPlayerId()==0){
+
+             }
+            else{
+                for(Player p: players ){
+
+                         if(pp.getPlayerId()==p.getId())
+                                 pp.setJug(p);
+                }
+            }
+
+        }
+        return formation;
+    }
+
+    public Boolean estaEnFormacion(Integer i){
+        for(PlayerPosition p:formation){
+            if(p.getPlayerId()==i)
+                return true;
+        }
+        return false;
     }
 }

@@ -51,9 +51,6 @@ public class User {
         this.email = email;
     }
 
-
-
-
     public String getPassword() {
         return password;
     }
@@ -62,11 +59,11 @@ public class User {
         this.password = pass;
     }
 
-    public List<Team> getTeam() {
+    public List<Team> getTeams() {
         return teams;
     }
 
-    public void setTeam(List<Team> team) {
+    public void setTeams(List<Team> team) {
         this.teams = team;
     }
 

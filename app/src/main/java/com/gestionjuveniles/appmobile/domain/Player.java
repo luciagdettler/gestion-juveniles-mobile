@@ -36,13 +36,16 @@ public class Player implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public String getPos() {
+    public String getPosition() {
         return position;
     }
 
-    public void setPos(String pos) {
+    public void setPosition(String pos) {
         this.position = pos;
     }
 
-
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

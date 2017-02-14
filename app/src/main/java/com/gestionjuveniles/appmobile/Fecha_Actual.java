@@ -10,19 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.gestionjuveniles.appmobile.Repositorio.Equipo_Adapter;
 import com.gestionjuveniles.appmobile.domain.Player;
 import com.gestionjuveniles.appmobile.domain.PlayerPosition;
 import com.gestionjuveniles.appmobile.domain.Team;
-import com.gestionjuveniles.appmobile.domain.User;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,10 +26,24 @@ public class Fecha_Actual extends AppCompatActivity {
 
     private ListView listaJugadores;
     private Equipo_Adapter adapter;
-    private User prof;
     private Team team;
-   private List<PlayerPosition> formacion;
-    private PlayerPosition player;
+    private List<PlayerPosition> formacion;
+    private Player arquero;
+    private Player defensor1;
+    private Player defensor2;
+    private Player defensor3;
+    private Player defensor4;
+    private Player mediocampista1;
+    private Player mediocampista2;
+    private Player mediocampista3;
+    private Player delantero1;
+    private Player delantero2;
+    private Player delantero3;
+    private ArrayAdapter<Player> arqAdapter;
+    private ArrayAdapter<Player> delAdapter;
+    private ArrayAdapter<Player> medAdapter;
+    private ArrayAdapter<Player> defAdapter;
+
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -44,47 +54,54 @@ public class Fecha_Actual extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        prof = new User();
-        team = new Team();
+        team = Menu.miusuariologeado.getTeams().get(0);
+        team.setearPlayers(team.getFormation());
 
         listaJugadores= (ListView) findViewById(R.id.listaJugadores);
-        DatabaseReference firebaseReference = database.getReference("users").child("0").child("teams").child("0");
-        firebaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                team = dataSnapshot.getValue(Team.class);
 
-                Log.d("fechaActual", "equipo  "+team.getId() +"   " + team.getPlayers().get(2).getName());
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                //NADA
-            }
-        });
-
-}
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //boolean cargado = equipocargado();
-        boolean cargado = false;
-        if(cargado){
+
+        arqAdapter  = new ArrayAdapter<Player>(
+                Fecha_Actual.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getArq());
+        defAdapter = new ArrayAdapter<Player>(
+                Fecha_Actual.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getDef());
+        medAdapter = new ArrayAdapter<Player>(
+                Fecha_Actual.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getMed());
+        delAdapter = new ArrayAdapter<Player>(
+                Fecha_Actual.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getDel());
+        adapter = new Equipo_Adapter(Fecha_Actual.this,team.getFormation());
 
 
-       List formacion = team.getPlayerPosition();
+        listaJugadores.setAdapter(adapter);
 
-        }else {
+//tratando de usar Tarea ASincroncia pero no anda
+       /* try {
+            DatabaseReference firebaseReference = database.getReference().child("users").child("0");
 
-             formacion= new ArrayList<PlayerPosition>();
-            formacion = team.getPlayerPosition();
+             buscado = new AsinTaskFirebase().execute(firebaseReference).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }*/
 
-        }
-       adapter = new Equipo_Adapter(Fecha_Actual.this,formacion);
-       listaJugadores.setAdapter(adapter);
+
+
+
 
 
 
@@ -93,36 +110,24 @@ public class Fecha_Actual extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            ArrayAdapter<Player> arqAdapter = new ArrayAdapter<Player>(
-                    Fecha_Actual.this,
-                    android.R.layout.simple_list_item_single_choice,
-                    team.getArq());
-            ArrayAdapter<Player> delAdapter = new ArrayAdapter<Player>(
-                    Fecha_Actual.this,
-                    android.R.layout.simple_list_item_single_choice,
-                    team.getDel());
-            ArrayAdapter<Player> medAdapter = new ArrayAdapter<Player>(
-                    Fecha_Actual.this,
-                    android.R.layout.simple_list_item_single_choice,
-                    team.getMed());
-            ArrayAdapter<Player> defAdapter = new ArrayAdapter<Player>(
-                    Fecha_Actual.this,
-                    android.R.layout.simple_list_item_single_choice,
-                    team.getDef());
+
+           final  DatabaseReference ref = database.getReference("users").child("0").child("teams").child("0").child("formation");
+
 
             switch(position){
                 case 0:
-                    Log.d("Arquero","Se selecciono el arquero");
-                    AlertDialog.Builder builderArq = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder0= new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Arqueros:")
                             .setSingleChoiceItems(arqAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    arquero = arqAdapter.getItem(which);
+                                    Log.d("fechaActual","se seleccionno el "+ arquero.getName());
                                 }
                             })
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
+                                    team.getFormation().get(0).setPlayerId(arquero.getId());
+                                    ref.child("0").child("playerId").setValue(arquero.getId());
                                 }
                             })
                             .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -131,24 +136,26 @@ public class Fecha_Actual extends AppCompatActivity {
                                 }
                             });
 
-                    AlertDialog alertArq = builderArq.create();
-                    alertArq.show();
+                    AlertDialog alert0 = builder0.create();
+                    alert0.show();
                     break;
                 case 1:
-                case 2:
-                case 3:
-                case 4:
-                    Log.d("Defensor","Se selecciono el defensor");
-                    AlertDialog.Builder builderDef = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Defensores:")
                             .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    defensor1 = defAdapter.getItem(which);
+                                    Log.d("fechaActual",defensor1.getId().toString());
                                 }
                             })
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
+                                  if(team.estaEnFormacion(defensor1.getId()))
+                                      Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                  else{
+                                       team.getFormation().get(1).setPlayerId(defensor1.getId());
+                                       ref.child("1").child("playerId").setValue(defensor1.getId());
+                                      }
                                 }
                             })
                             .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -157,23 +164,81 @@ public class Fecha_Actual extends AppCompatActivity {
                                 }
                             });
 
-                    AlertDialog alertDef = builderDef.create();
-                    alertDef.show();
+                    AlertDialog alert1 = builder1.create();
+                    alert1.show();
                     break;
-                case 5:
-                case 6:
-                case 7:
-                    Log.d("Mediocampista","Se selecciono el mediocampista");
-                    AlertDialog.Builder builderMed = new AlertDialog.Builder(Fecha_Actual.this)
-                            .setTitle("Mediocampistas;")
+                case 2:
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Defensores:")
+                            .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    defensor2 = defAdapter.getItem(which);                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(defensor2.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                    else{
+                                    team.getFormation().get(2).setPlayerId(defensor2.getId());
+                                    ref.child("2").child("playerId").setValue(defensor2.getId());
+
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert2 = builder2.create();
+                    alert2.show();
+                    break;
+                case 3:
+                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Defensores:")
+                            .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    defensor3 = defAdapter.getItem(which);
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(defensor3.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                    else{
+                                    team.getFormation().get(3).setPlayerId(defensor3.getId());
+                                    ref.child("3").child("playerId").setValue(defensor3.getId());
+
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert3 = builder3.create();
+                    alert3.show();
+                    break;
+                case 4:
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Mediocampistas:")
                             .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    mediocampista1=medAdapter.getItem(which);
                                 }
                             })
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
+                                    if(team.estaEnFormacion(mediocampista1.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                    else{
+                                    team.getFormation().get(4).setPlayerId(mediocampista1.getId());
+                                    ref.child("4").child("playerId").setValue(mediocampista1.getId());
+
+                                        }
                                 }
                             })
                             .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -182,23 +247,54 @@ public class Fecha_Actual extends AppCompatActivity {
                                 }
                             });
 
-                    AlertDialog alertMed = builderMed.create();
-                    alertMed.show();
+                    AlertDialog alert4 = builder4.create();
+                    alert4.show();
                     break;
-                case 8:
-                case 9:
-                case 10:
-                    Log.d("Delantero","Se selecciono el delanter");
-                    AlertDialog.Builder builderDel = new AlertDialog.Builder(Fecha_Actual.this)
+                case 5:
+                    AlertDialog.Builder builder5 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Defensores:")
+                            .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    defensor4=defAdapter.getItem(which);
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(defensor4.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                    else{
+                                        team.getFormation().get(5).setPlayerId(defensor4.getId());
+                                        ref.child("5").child("playerId").setValue(defensor4.getId());
+
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert5 = builder5.create();
+                    alert5.show();
+                    break;
+                case 6:
+                    AlertDialog.Builder builder6 = new AlertDialog.Builder(Fecha_Actual.this)
                             .setTitle("Delanteros:")
                             .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    delantero1=delAdapter.getItem(which);
                                 }
                             })
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
+                                    if(team.estaEnFormacion(delantero1.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                    else{
+                                    team.getFormation().get(6).setPlayerId(delantero1.getId());
+                                    ref.child("6").child("playerId").setValue(delantero1.getId());
+
+                                        }
                                 }
                             })
                             .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -207,15 +303,126 @@ public class Fecha_Actual extends AppCompatActivity {
                                 }
                             });
 
-                    AlertDialog alertDel = builderDel.create();
-                    alertDel.show();
+                    AlertDialog alert6 = builder6.create();
+                    alert6.show();
                     break;
+                case 7:
+                    AlertDialog.Builder builder7 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Mediocampistas;")
+                            .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mediocampista2=medAdapter.getItem(which);
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(mediocampista2.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                   else{
+                                    team.getFormation().get(7).setPlayerId(mediocampista2.getId());
+                                    ref.child("7").child("playerId").setValue(mediocampista2.getId());
 
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
+                    AlertDialog alert7 = builder7.create();
+                    alert7.show();
+                    break;
+                case 8:
+                    AlertDialog.Builder builder8 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Delanteros:")
+                            .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    delantero2=delAdapter.getItem(which);
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(delantero2.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                   else{
+                                        team.getFormation().get(8).setPlayerId(delantero2.getId());
 
+                                    ref.child("8").child("playerId").setValue(delantero2.getId());
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert8 = builder8.create();
+                    alert8.show();
+                    break;
+                case 9:
+                    AlertDialog.Builder builder9 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Mediocampistas:")
+                            .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mediocampista3=medAdapter.getItem(which);
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(mediocampista3.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                    else{
+                                    team.getFormation().get(9).setPlayerId(mediocampista3.getId());
+                                    ref.child("9").child("playerId").setValue(mediocampista3.getId());
+
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert9 = builder9.create();
+                    alert9.show();
+                    break;
+                case 10:
+                    AlertDialog.Builder builder10 = new AlertDialog.Builder(Fecha_Actual.this)
+                            .setTitle("Delanteros:")
+                            .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    delantero3=delAdapter.getItem(which);
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(team.estaEnFormacion(delantero3.getId()))
+                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                   else{
+                                    team.getFormation().get(10).setPlayerId(delantero3.getId());
+                                   ref.child("10").child("playerId").setValue(delantero3.getId());
+
+                                        }
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert10 = builder10.create();
+                    alert10.show();
+                    break;
             }
 
     }
 });
 }
+
+
 }

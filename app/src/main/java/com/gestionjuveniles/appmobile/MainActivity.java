@@ -2,21 +2,18 @@ package com.gestionjuveniles.appmobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.gestionjuveniles.appmobile.domain.Team;
 import com.gestionjuveniles.appmobile.domain.User;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 
@@ -25,74 +22,63 @@ public class MainActivity extends AppCompatActivity {
     private EditText user;
     private EditText pass;
     private Button iniciarSesion;
-    private User prof;
-    private Team team;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+    private String email;
+    private String contraseña;
+    private User profesor;
+
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mFirebaseAuth = FirebaseAuth.getInstance();
         user = (EditText) findViewById(R.id.user);
         pass = (EditText) findViewById(R.id.pass);
-        final String email = user.getText().toString();
-        final String contraseña = pass.getText().toString();
-
-
-
-
-        User usuarioNoAutenticado = new User();
-
-
-        DatabaseReference firebaseReference = database.getReference("users").child("0");
-        firebaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                prof = dataSnapshot.getValue(User.class);
-
-                Log.d("DATALUCIA","nombre  "+ prof.getEmail() + prof.getId()+prof.getPassword()+prof.getName());
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                //NADA
-            }
-        });
 
 
         iniciarSesion = (Button) findViewById(R.id.ingresar);
         iniciarSesion.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String email = user.getText().toString();
+                String password = pass.getText().toString();
 
+                email = email.trim();
+                password = password.trim();
 
+                if (email.isEmpty() || password.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("error")
+                            .setTitle("error")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    mFirebaseAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Intent intent = new Intent(MainActivity.this, Menu.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    } else {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                        builder.setMessage(task.getException().getMessage())
 
-                Intent i = new Intent(MainActivity.this, Menu.class);
-
-                startActivity(i);
-
+                                                .setPositiveButton(android.R.string.ok, null);
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                                    }
+                                }
+                            });
+                }
             }
         });
 
-    }
 
-    public Boolean esProfesor(String e, String c, List<User> profes){
-       Boolean prof=false;
-        user =null;
-        for (User p : profes){
-            if(e.equals(p.getEmail())){
-                if(c.equals(p.getPassword())){
-                    prof=true;
-                }
-            }
-        }
-        return prof;
-    }
-
-
+}
 
 }
