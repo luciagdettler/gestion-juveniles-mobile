@@ -22,7 +22,7 @@
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Fecha_Actual"
+            android:name=".Form_previa_activity"
             android:label="@string/title_activity_fecha_actual"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <service

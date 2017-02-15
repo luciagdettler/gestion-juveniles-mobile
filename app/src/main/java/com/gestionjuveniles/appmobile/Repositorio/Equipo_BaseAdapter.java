@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gestionjuveniles.appmobile.R;
@@ -48,6 +49,8 @@ public class Equipo_BaseAdapter extends BaseAdapter {
             holder.txtPosicion = (TextView) convertView.findViewById(R.id.pos);
 
             holder.txtNombre = (TextView) convertView.findViewById(R.id.name);
+
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,6 +77,7 @@ public class Equipo_BaseAdapter extends BaseAdapter {
         TextView txtNum;
         TextView txtPosicion;
         TextView txtNombre;
+        ImageView imagen;
     }
 }
 

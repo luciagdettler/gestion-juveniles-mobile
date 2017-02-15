@@ -20,15 +20,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class Fecha_Actual extends AppCompatActivity {
+public class Form_previa_activity extends AppCompatActivity {
 
     private ListView listaJugadores;
     private Equipo_BaseAdapter adapter;
     private Team team;
-    private List<PlayerPosition> formacion;
+
     private Player arquero;
     private Player defensor1;
     private Player defensor2;
@@ -51,7 +50,7 @@ public class Fecha_Actual extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fecha_actual);
+        setContentView(R.layout.form_previa_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,27 +64,27 @@ public class Fecha_Actual extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
         arqAdapter  = new ArrayAdapter<Player>(
-                Fecha_Actual.this,
+                Form_previa_activity.this,
                 android.R.layout.simple_list_item_single_choice,
                 team.getArq());
         defAdapter = new ArrayAdapter<Player>(
-                Fecha_Actual.this,
+                Form_previa_activity.this,
                 android.R.layout.simple_list_item_single_choice,
                 team.getDef());
         medAdapter = new ArrayAdapter<Player>(
-                Fecha_Actual.this,
+                Form_previa_activity.this,
                 android.R.layout.simple_list_item_single_choice,
                 team.getMed());
         delAdapter = new ArrayAdapter<Player>(
-                Fecha_Actual.this,
+                Form_previa_activity.this,
                 android.R.layout.simple_list_item_single_choice,
                 team.getDel());
 
-        adapter = new Equipo_BaseAdapter(Fecha_Actual.this, (ArrayList<PlayerPosition>) team.getFormation());
+        adapter = new Equipo_BaseAdapter(Form_previa_activity.this, (ArrayList<PlayerPosition>) team.getFormation());
         listaJugadores.setAdapter(adapter);
 
 //tratando de usar Tarea ASincroncia pero no anda
@@ -101,10 +100,6 @@ public class Fecha_Actual extends AppCompatActivity {
 
 
 
-
-
-
-
     listaJugadores.setOnItemClickListener(new  AdapterView.OnItemClickListener() {
 
         @Override
@@ -116,7 +111,7 @@ public class Fecha_Actual extends AppCompatActivity {
 
             switch(position){
                 case 0:
-                    AlertDialog.Builder builder0= new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder0= new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Arqueros:")
                             .setSingleChoiceItems(arqAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -143,7 +138,7 @@ public class Fecha_Actual extends AppCompatActivity {
 
                     break;
                 case 1:
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Defensores:")
                             .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -154,7 +149,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                   if(team.estaEnFormacion(defensor1.getId()))
-                                      Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                      Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                   else{
                                        team.getFormation().get(1).setPlayerId(defensor1.getId());
                                        ref.child("1").child("playerId").setValue(defensor1.getId());
@@ -171,7 +166,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert1.show();
                     break;
                 case 2:
-                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Defensores:")
                             .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -180,7 +175,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(defensor2.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                     else{
                                     team.getFormation().get(2).setPlayerId(defensor2.getId());
                                     ref.child("2").child("playerId").setValue(defensor2.getId());
@@ -198,7 +193,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert2.show();
                     break;
                 case 3:
-                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Defensores:")
                             .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -208,7 +203,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(defensor3.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                     else{
                                     team.getFormation().get(3).setPlayerId(defensor3.getId());
                                     ref.child("3").child("playerId").setValue(defensor3.getId());
@@ -226,7 +221,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert3.show();
                     break;
                 case 4:
-                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Mediocampistas:")
                             .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -236,7 +231,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(mediocampista1.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                     else{
                                     team.getFormation().get(4).setPlayerId(mediocampista1.getId());
                                     ref.child("4").child("playerId").setValue(mediocampista1.getId());
@@ -254,7 +249,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert4.show();
                     break;
                 case 5:
-                    AlertDialog.Builder builder5 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder5 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Defensores:")
                             .setSingleChoiceItems(defAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -264,7 +259,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(defensor4.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                     else{
                                         team.getFormation().get(5).setPlayerId(defensor4.getId());
                                         ref.child("5").child("playerId").setValue(defensor4.getId());
@@ -282,7 +277,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert5.show();
                     break;
                 case 6:
-                    AlertDialog.Builder builder6 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder6 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Delanteros:")
                             .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -292,7 +287,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(delantero1.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                     else{
                                     team.getFormation().get(6).setPlayerId(delantero1.getId());
                                     ref.child("6").child("playerId").setValue(delantero1.getId());
@@ -310,7 +305,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert6.show();
                     break;
                 case 7:
-                    AlertDialog.Builder builder7 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder7 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Mediocampistas;")
                             .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -320,7 +315,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(mediocampista2.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                    else{
                                     team.getFormation().get(7).setPlayerId(mediocampista2.getId());
                                     ref.child("7").child("playerId").setValue(mediocampista2.getId());
@@ -338,7 +333,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert7.show();
                     break;
                 case 8:
-                    AlertDialog.Builder builder8 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder8 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Delanteros:")
                             .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -348,7 +343,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(delantero2.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                    else{
                                         team.getFormation().get(8).setPlayerId(delantero2.getId());
 
@@ -366,7 +361,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert8.show();
                     break;
                 case 9:
-                    AlertDialog.Builder builder9 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder9 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Mediocampistas:")
                             .setSingleChoiceItems(medAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -376,7 +371,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(mediocampista3.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                     else{
                                     team.getFormation().get(9).setPlayerId(mediocampista3.getId());
                                     ref.child("9").child("playerId").setValue(mediocampista3.getId());
@@ -394,7 +389,7 @@ public class Fecha_Actual extends AppCompatActivity {
                     alert9.show();
                     break;
                 case 10:
-                    AlertDialog.Builder builder10 = new AlertDialog.Builder(Fecha_Actual.this)
+                    AlertDialog.Builder builder10 = new AlertDialog.Builder(Form_previa_activity.this)
                             .setTitle("Delanteros:")
                             .setSingleChoiceItems(delAdapter,0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -404,7 +399,7 @@ public class Fecha_Actual extends AppCompatActivity {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(team.estaEnFormacion(delantero3.getId()))
-                                        Toast.makeText(Fecha_Actual.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Form_previa_activity.this,"El jugador ya fue elegido. Por favor eliga otro jugador",Toast.LENGTH_SHORT).show();
                                    else{
                                     team.getFormation().get(10).setPlayerId(delantero3.getId());
                                    ref.child("10").child("playerId").setValue(delantero3.getId());
@@ -426,6 +421,12 @@ public class Fecha_Actual extends AppCompatActivity {
     }
 });
 }
-
+   /* @Override
+    public void onResume( ){
+        super.onResume();
+        team.getFormation().clear();
+        team.getFormation().addAll(team.getFormation());
+        adapter.notifyDataSetChanged();
+    }*/
 
 }

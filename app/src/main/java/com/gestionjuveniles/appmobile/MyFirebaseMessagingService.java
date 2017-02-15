@@ -43,7 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext())
                 .setContentIntent(contentIntent)
-                .setContentTitle("Mensaje de Firebase")
+                .setContentTitle("Gestión Juveniles")
                 .setContentText(message)
                 .setSound(notificactionSound)
                 .setWhen(System.currentTimeMillis())

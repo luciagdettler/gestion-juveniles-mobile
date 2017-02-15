@@ -26,7 +26,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
 
     private Button fecha_actual;
     public static User miusuariologeado;
-   private ProgressBar progressBar;
+    private ProgressBar progressBar;
 
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -73,15 +73,15 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View view) {
 
 
-               if(miusuariologeado==null) {
+                if(miusuariologeado==null) {
                     AsinTaskEspera ejemploAsyncTask = new AsinTaskEspera();
                     ejemploAsyncTask.execute();
 
                 }
-               else{
-                   Intent i = new Intent(Menu.this, Fecha_Actual.class);
-                   startActivity(i);
-               }
+                else{
+                    Intent i = new Intent(Menu.this, Form_previa_activity.class);
+                    startActivity(i);
+                }
 
             }
         });
@@ -135,7 +135,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         @Override
         protected Boolean doInBackground(Void... params) {
             while(miusuariologeado==null){
-               int i=1;
+                int i=1;
                 UnSegundo();
                 publishProgress(i*10);
                 if(isCancelled()){
@@ -170,9 +170,9 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         @Override
         protected void onPostExecute(Boolean resultado) {
             //super.onPostExecute(aVoid);
-                Toast.makeText(Menu.this, "Finalizo la carga", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Menu.this, "Finalizo la carga", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(ProgressBar.INVISIBLE);
-            Intent i = new Intent(Menu.this, Fecha_Actual.class);
+            Intent i = new Intent(Menu.this, Form_previa_activity.class);
 
             startActivity(i);
 
@@ -180,6 +180,6 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
 
 
 
-}
+    }
 
 }

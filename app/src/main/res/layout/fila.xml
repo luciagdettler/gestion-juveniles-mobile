@@ -8,6 +8,12 @@
         android:layout_height="wrap_content"
         android:weightSum="1">
 
+        <ImageView
+            android:layout_width="41dp"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView2"
+            android:src="@drawable/pelota" />
+
         <TextView
             android:id="@+id/pos"
             android:layout_margin="5dp"

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     } else {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                        builder.setMessage(task.getException().getMessage())
+                                        builder.setMessage("Usted no esta registrado como usuario de la aplicación")
 
                                                 .setPositiveButton(android.R.string.ok, null);
                                         AlertDialog dialog = builder.create();

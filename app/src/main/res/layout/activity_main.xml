@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="gestion_juveniles.com.gestionjuveniles_mobile.MainActivity">
+    tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         android:id="@+id/user"
         android:layout_alignBottom="@+id/tv2"
         android:layout_alignParentEnd="true"
-        android:text="lucia@gmail.com" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
         android:id="@+id/pass"
         android:layout_alignBottom="@+id/tv3"
         android:layout_alignEnd="@+id/user"
-        android:text="dettler" />
+      />
 
     <Button
         android:layout_width="wrap_content"
