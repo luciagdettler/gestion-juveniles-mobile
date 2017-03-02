@@ -12,17 +12,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.gestionjuveniles.appmobile.Interfaz.BusquedaUsuarioListener;
+import com.gestionjuveniles.appmobile.Repositorio.AsinTaskFirebase;
 import com.gestionjuveniles.appmobile.Repositorio.Equipo_BaseAdapter;
 import com.gestionjuveniles.appmobile.domain.Player;
 import com.gestionjuveniles.appmobile.domain.PlayerPosition;
 import com.gestionjuveniles.appmobile.domain.Team;
+import com.gestionjuveniles.appmobile.domain.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 
-public class Form_previa_activity extends AppCompatActivity {
+public class Form_previa_activity extends AppCompatActivity implements BusquedaUsuarioListener{
 
     private ListView listaJugadores;
     private Equipo_BaseAdapter adapter;
@@ -53,11 +56,12 @@ public class Form_previa_activity extends AppCompatActivity {
         setContentView(R.layout.form_previa_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        team = Menu.miusuariologeado.getTeams().get(0);
-        team.setearPlayers(team.getFormation());
-
         listaJugadores= (ListView) findViewById(R.id.listaJugadores);
+        AsinTaskFirebase ejemploAsyncTask = new AsinTaskFirebase(this);
+        ejemploAsyncTask.execute();
+
+
+
 
 
 
@@ -67,36 +71,9 @@ public class Form_previa_activity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        arqAdapter  = new ArrayAdapter<Player>(
-                Form_previa_activity.this,
-                android.R.layout.simple_list_item_single_choice,
-                team.getArq());
-        defAdapter = new ArrayAdapter<Player>(
-                Form_previa_activity.this,
-                android.R.layout.simple_list_item_single_choice,
-                team.getDef());
-        medAdapter = new ArrayAdapter<Player>(
-                Form_previa_activity.this,
-                android.R.layout.simple_list_item_single_choice,
-                team.getMed());
-        delAdapter = new ArrayAdapter<Player>(
-                Form_previa_activity.this,
-                android.R.layout.simple_list_item_single_choice,
-                team.getDel());
 
-        adapter = new Equipo_BaseAdapter(Form_previa_activity.this, (ArrayList<PlayerPosition>) team.getFormation());
-        listaJugadores.setAdapter(adapter);
 
-//tratando de usar Tarea ASincroncia pero no anda
-       /* try {
-            DatabaseReference firebaseReference = database.getReference().child("users").child("0");
 
-             buscado = new AsinTaskFirebase().execute(firebaseReference).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }*/
 
 
 
@@ -421,12 +398,33 @@ public class Form_previa_activity extends AppCompatActivity {
     }
 });
 }
-   /* @Override
-    public void onResume( ){
-        super.onResume();
-        team.getFormation().clear();
-        team.getFormation().addAll(team.getFormation());
-        adapter.notifyDataSetChanged();
-    }*/
+
+    public void busquedaFinalizada(User u) {
+
+        Log.d("TAG","usuario: "+u.getName());
+        team = u.getTeams().get(0);
+        team.setearPlayers(team.getFormation());
+
+        arqAdapter  = new ArrayAdapter<Player>(
+                Form_previa_activity.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getArq());
+        defAdapter = new ArrayAdapter<Player>(
+                Form_previa_activity.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getDef());
+        medAdapter = new ArrayAdapter<Player>(
+                Form_previa_activity.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getMed());
+        delAdapter = new ArrayAdapter<Player>(
+                Form_previa_activity.this,
+                android.R.layout.simple_list_item_single_choice,
+                team.getDel());
+
+        adapter = new Equipo_BaseAdapter(Form_previa_activity.this, (ArrayList<PlayerPosition>) team.getFormation());
+        listaJugadores.setAdapter(adapter);
+    }
+
 
 }

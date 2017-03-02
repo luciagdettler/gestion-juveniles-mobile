@@ -7,5 +7,4 @@ import com.gestionjuveniles.appmobile.domain.User;
  */
 public interface BusquedaUsuarioListener {
     public void busquedaFinalizada(User u);
-    public void busquedaActualizada(String mensaje);
 }

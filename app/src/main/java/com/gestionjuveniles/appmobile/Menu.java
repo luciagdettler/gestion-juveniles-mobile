@@ -16,11 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gestionjuveniles.appmobile.domain.User;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class Menu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,7 +36,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
-        DatabaseReference firebaseReference = database.getReference("users").child("0");
+       /* DatabaseReference firebaseReference = database.getReference("users").child("0");
         firebaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -56,7 +52,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 //NADA
             }
         });
-
+*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,8 +68,9 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View view) {
 
-
-                if(miusuariologeado==null) {
+                Intent i = new Intent(Menu.this, Form_previa_activity.class);
+                startActivity(i);
+               /* if(miusuariologeado==null) {
                     AsinTaskEspera ejemploAsyncTask = new AsinTaskEspera();
                     ejemploAsyncTask.execute();
 
@@ -81,7 +78,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 else{
                     Intent i = new Intent(Menu.this, Form_previa_activity.class);
                     startActivity(i);
-                }
+                }*/
 
             }
         });

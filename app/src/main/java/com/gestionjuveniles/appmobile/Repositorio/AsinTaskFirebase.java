@@ -1,65 +1,37 @@
 package com.gestionjuveniles.appmobile.Repositorio;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.gestionjuveniles.appmobile.domain.Team;
+import com.gestionjuveniles.appmobile.Interfaz.BusquedaUsuarioListener;
 import com.gestionjuveniles.appmobile.domain.User;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Usuario on 13/2/2017.
  */
-public class AsinTaskFirebase extends AsyncTask<DatabaseReference,Integer,User> {
+public class AsinTaskFirebase extends AsyncTask<Void,Integer,User> {
 
+    private BusquedaUsuarioListener listener;
 
+    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private User user;
 
+    public AsinTaskFirebase(BusquedaUsuarioListener dListener){
+        this.listener = dListener;
+    }
     @Override
-    protected User doInBackground(DatabaseReference... voids) {
+    protected User doInBackground(Void... params) {
 
-        DatabaseReference database = (DatabaseReference) voids[0];//FirebaseDatabase.getInstance();
-
-        database.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                user = dataSnapshot.getValue(User.class);
-                Team team = user.getTeams().get(0);
-                Log.d("fechaActual", "equipo  "+team.getId() +"   " + team.getPlayers().get(2).getName()+ "    "+team.getFormation().get(2).getPosition());
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-       /* firebaseReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference firebaseReference = database.getReference("users").child("0");
+        firebaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 user = dataSnapshot.getValue(User.class);
-                Team team = user.getTeams().get(0);
-                Log.d("fechaActual", "equipo  "+team.getId() +"   " + team.getPlayers().get(2).getName()+ "    "+team.getFormation().get(2).getPosition());
-
 
             }
 
@@ -68,10 +40,38 @@ public class AsinTaskFirebase extends AsyncTask<DatabaseReference,Integer,User> 
                 //NADA
             }
         });
-*/
+
+        while(user==null){
+        }
         return user;
 
+    }
 
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(User user) {
+        //super.onPostExecute();
+        listener.busquedaFinalizada(user);
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onCancelled(User user) {
+        super.onCancelled(user);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
     }
 
 }
