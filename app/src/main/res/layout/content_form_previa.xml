@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Form_previa_activity"
-    tools:showIn="@layout/activity_fecha_actual">
+    tools:showIn="@layout/form_previa_activity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,11 +18,13 @@
         android:fillViewport="true"
         android:id="@+id/scrollView" >
 
-        <ListView
-            android:id="@+id/listaJugadores"
+        <android.support.v7.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"></ListView>
+            android:padding="3dp"
+            android:scrollbars="vertical" />
     </ScrollView>
 
 
